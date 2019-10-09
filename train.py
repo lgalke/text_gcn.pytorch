@@ -78,8 +78,11 @@ t_support = []
 for i in range(len(support)):
     t_support.append(torch.Tensor(support[i]))
 
+        
+model = model_func(input_dim=features.shape[0], support=t_support, num_classes=y_train.shape[1])
+
 if torch.cuda.is_available():
-    model_func = model_func.cuda()
+    model = model.cuda()
     t_features = t_features.cuda()
     t_y_train = t_y_train.cuda()
     t_y_val = t_y_val.cuda()
@@ -88,8 +91,6 @@ if torch.cuda.is_available():
     tm_train_mask = tm_train_mask.cuda()
     for i in range(len(support)):
         t_support = [t.cuda() for t in t_support if True]
-        
-model = model_func(input_dim=features.shape[0], support=t_support, num_classes=y_train.shape[1])
 
 
 # Loss and optimizer
